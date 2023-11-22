@@ -1,10 +1,8 @@
 import { useEffect, useState } from "react"
-import { useNavigate } from "react-router-dom"
 import NavigationBar from "../components/NavigationBar"
+import { getUserLoggedIn } from "../services/user-services"
 import ImageProfile from "/profile.jpg"
-import axios from "axios"
 const Profile = () => {
-  const navigate = useNavigate()
   const [user, setUser] = useState([])
   const token = localStorage.getItem("token")
   useEffect(() => {
@@ -12,17 +10,10 @@ const Profile = () => {
       navigate("/auth/login")
     }
   }, [token])
-  const getUser = async () => {
-    const response = await axios.get(
-      `${import.meta.env.VITE_BASE_API_URL}/users/current`,
-      {
-        headers: { Authorization: token },
-      }
-    )
-    setUser(response.data.data)
-  }
   useEffect(() => {
-    getUser()
+    getUserLoggedIn(token, (response) => {
+      setUser(response)
+    })
   }, [])
 
   return (

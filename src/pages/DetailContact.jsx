@@ -1,8 +1,8 @@
 import { useState, useEffect } from "react"
 import { Link, useNavigate, useParams } from "react-router-dom"
-import axios from "axios"
 import NavigationBar from "../components/NavigationBar"
 import ImageProfile from "/profile.jpg"
+import { getDetailContact } from "../services/contact-services"
 const DetailContact = () => {
   const navigate = useNavigate()
   const { id } = useParams()
@@ -15,16 +15,12 @@ const DetailContact = () => {
       navigate("/auth/login")
     }
   }, [token])
-  const getContactById = async () => {
-    const response = await axios.get(
-      `${import.meta.env.VITE_BASE_API_URL}/contacts/${id}`,
-      { headers: { Authorization: token } }
-    )
-    setContact(response.data.data)
-    setAddresses(response.data.data.addresses)
-  }
+
   useEffect(() => {
-    getContactById()
+    getDetailContact(id, token, (response) => {
+      setContact(response)
+      setAddresses(response.addresses)
+    })
   }, [id])
 
   return (

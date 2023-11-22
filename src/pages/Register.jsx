@@ -1,43 +1,41 @@
 import { useState } from "react"
 import AuthLayout from "../Layouts/AuthLayouts"
 import Input from "../components/Input"
-import { useNavigate } from "react-router-dom"
-import axios from "axios"
 import Swal from "sweetalert2"
+import { authRegister } from "../services/user-services"
+import { useNavigate } from "react-router-dom"
 const Register = () => {
+  const navigate = useNavigate()
   const [username, setUsername] = useState("")
   const [name, setName] = useState("")
   const [password, setPassword] = useState("")
-  const navigate = useNavigate()
+
   const handleRegister = async (e) => {
     e.preventDefault()
-    try {
-      await axios
-        .post(`${import.meta.env.VITE_BASE_API_URL}/users`, {
-          username,
-          name,
-          password,
-        })
-        .then((response) => {
-          const msg = response.data.message
-          Swal.fire({
-            title: "Success",
-            text: `${msg}`,
-            icon: "success",
-            confirmButtonText: "OK",
-          }).then(function () {
-            navigate("/auth/login")
-          })
-        })
-    } catch (e) {
-      const message = e.response.data.errors
-      Swal.fire({
-        title: "Error",
-        text: `${message}`,
-        icon: "error",
-        confirmButtonText: "Ok",
-      })
+    const data = {
+      username,
+      name,
+      password,
     }
+    authRegister(data, (status, response) => {
+      if (status) {
+        Swal.fire({
+          title: "Success",
+          text: `${response}`,
+          icon: "success",
+          confirmButtonText: "OK",
+        }).then(function () {
+          navigate("/auth/login")
+        })
+      } else {
+        Swal.fire({
+          title: "Error",
+          text: `${response}`,
+          icon: "error",
+          confirmButtonText: "OK",
+        })
+      }
+    })
   }
 
   return (

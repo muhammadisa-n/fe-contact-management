@@ -2,6 +2,7 @@ import { useEffect, useState } from "react"
 import { Link, useNavigate } from "react-router-dom"
 import NavigationBar from "../components/NavigationBar"
 import axios from "axios"
+import { getAllContact } from "../services/contact-services"
 
 const Home = () => {
   const navigate = useNavigate()
@@ -13,13 +14,9 @@ const Home = () => {
     }
   }, [token])
   useEffect(() => {
-    axios
-      .get(`${import.meta.env.VITE_BASE_API_URL}/contacts`, {
-        headers: { Authorization: token },
-      })
-      .then((response) => {
-        setContacts(response.data.data)
-      })
+    getAllContact(token, (response) => {
+      setContacts(response)
+    })
   }, [contacts])
 
   return (
@@ -65,9 +62,6 @@ const Home = () => {
                       >
                         <path
                           stroke="currentColor"
-                          stroke-linecap="round"
-                          stroke-linejoin="round"
-                          stroke-width="2"
                           d="M1 5h12m0 0L9 1m4 4L9 9"
                         />
                       </svg>

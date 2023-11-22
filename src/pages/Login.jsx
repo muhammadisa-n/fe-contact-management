@@ -2,8 +2,8 @@ import AuthLayout from "../Layouts/AuthLayouts"
 import Input from "../components/Input"
 import { useEffect, useState } from "react"
 import { useNavigate } from "react-router-dom"
-import axios from "axios"
 import Swal from "sweetalert2"
+import { authLogin } from "../services/user-services"
 const Login = () => {
   const [username, setUsername] = useState("")
   const [password, setPassword] = useState("")
@@ -16,34 +16,23 @@ const Login = () => {
   }, [token])
   const handleLogin = async (e) => {
     e.preventDefault()
-    try {
-      await axios
-        .post(`${import.meta.env.VITE_BASE_API_URL}/users/login`, {
-          username,
-          password,
-        })
-        .then((response) => {
-          const msg = response.data.message
-          const token = response.data.data.token
-          localStorage.setItem("token", token)
-          Swal.fire({
-            title: "Success",
-            text: `${msg}`,
-            icon: "success",
-            confirmButtonText: "OK",
-          }).then(function () {
-            navigate("/")
-          })
-        })
-    } catch (e) {
-      const message = e.response.data.errors
-      Swal.fire({
-        title: "Error",
-        text: `${message}`,
-        icon: "error",
-        confirmButtonText: "Ok",
-      })
+    const data = {
+      username,
+      password,
     }
+    authLogin(data, (status, response) => {
+      if (status) {
+        localStorage.setItem("token", response)
+        navigate("/")
+      } else {
+        Swal.fire({
+          title: "Error",
+          text: `${response}`,
+          icon: "error",
+          confirmButtonText: "Ok",
+        })
+      }
+    })
   }
   return (
     <>
