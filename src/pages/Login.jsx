@@ -1,14 +1,19 @@
 import AuthLayout from "../Layouts/AuthLayouts"
 import Input from "../components/Input"
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import { useNavigate } from "react-router-dom"
 import axios from "axios"
 import Swal from "sweetalert2"
 const Login = () => {
   const [username, setUsername] = useState("")
   const [password, setPassword] = useState("")
-
   const navigate = useNavigate()
+  const token = localStorage.getItem("token")
+  useEffect(() => {
+    if (token) {
+      navigate("/")
+    }
+  }, [token])
   const handleLogin = async (e) => {
     e.preventDefault()
     try {
