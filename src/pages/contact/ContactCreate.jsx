@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useLocalStorage } from "react-use";
 import { alertError, alertSuccess } from "../../lib/alert";
-import { contactCreate } from "../../lib/Api/Contacts";
+import { contactCreate } from "../../lib/api/Contacts";
 
 const ContactCreate = () => {
   const [firstName, setFirstName] = useState("");

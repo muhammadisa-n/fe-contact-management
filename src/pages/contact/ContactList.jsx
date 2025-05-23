@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 
 import { alertConfirm, alertError, alertSuccess } from "../../lib/alert.js";
 import { Link } from "react-router-dom";
-import { contactDelete, contactList } from "../../lib/Api/Contacts.js";
+import { contactDelete, contactList } from "../../lib/api/Contacts.js";
 
 export default function ContactList() {
   const [token, _] = useLocalStorage("token", "");
