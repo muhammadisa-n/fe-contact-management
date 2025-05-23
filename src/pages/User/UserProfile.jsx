@@ -6,7 +6,7 @@ import {
   userDetail,
   userUpdatePassword,
   userUpdateProfile,
-} from "../../lib/Api/Users";
+} from "../../lib/api/Users";
 
 const UserProfile = () => {
   const [name, setName] = useState("");

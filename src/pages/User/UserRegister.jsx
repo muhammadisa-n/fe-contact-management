@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { alertError, alertSuccess } from "../../lib/alert";
 import { Link, useNavigate } from "react-router";
-import { userRegister } from "../../lib/Api/Users";
+import { userRegister } from "../../lib/api/Users";
 
 const UserRegister = () => {
   const [username, setUsername] = useState("");
