@@ -3,7 +3,7 @@ import {
   userDetail,
   userUpdatePassword,
   userUpdateProfile,
-} from "../../lib/api/Users";
+} from "../../lib/Api/Users";
 import { useEffectOnce, useLocalStorage } from "react-use";
 import { alertError, alertSuccess } from "../../lib/alert";
 

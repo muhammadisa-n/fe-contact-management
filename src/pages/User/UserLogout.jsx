@@ -1,5 +1,5 @@
 import { useEffectOnce, useLocalStorage } from "react-use";
-import { userLogout } from "../../lib/api/Users";
+import { userLogout } from "../../lib/Api/Users";
 import { useNavigate } from "react-router";
 import { alertError } from "../../lib/alert";
 
