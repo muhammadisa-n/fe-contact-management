@@ -193,8 +193,15 @@ const AddressCreate = () => {
                     className="w-full pl-10 pr-3 py-3 bg-gray-700 bg-opacity-50 border border-gray-600 text-white rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200"
                     placeholder="Enter postal code"
                     required
+                    inputMode="numeric"
+                    pattern="[0-9]*"
                     value={postal_code}
-                    onChange={(e) => setPostal_code(e.target.value)}
+                    onChange={(e) => {
+                      const val = e.target.value;
+                      if (/^\d*$/.test(val)) {
+                        setPostal_code(val);
+                      }
+                    }}
                   />
                 </div>
               </div>

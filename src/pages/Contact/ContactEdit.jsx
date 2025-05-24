@@ -143,14 +143,21 @@ const ContactEdit = () => {
                   <i className="fas fa-phone text-gray-500" />
                 </div>
                 <input
-                  type="tel"
+                  type="text"
                   id="phone"
                   name="phone"
                   className="w-full pl-10 pr-3 py-3 bg-gray-700 bg-opacity-50 border border-gray-600 text-white rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200"
                   placeholder="Enter phone number"
+                  inputMode="numeric"
+                  pattern="[0-9]*"
+                  required
                   value={phone}
-                  onChange={(e) => setPhone(e.target.value)}
-                  required=""
+                  onChange={(e) => {
+                    const val = e.target.value;
+                    if (/^\d*$/.test(val)) {
+                      setPhone(val);
+                    }
+                  }}
                 />
               </div>
             </div>
