@@ -1,7 +1,7 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
 
-const ErrorNotFounPage = () => {
+const ErrorNotFoundPage = () => {
   const navigate = useNavigate();
   return (
     <div className="bg-gradient-to-br from-gray-900 to-gray-800 min-h-screen flex items-center justify-center">
@@ -34,4 +34,4 @@ const ErrorNotFounPage = () => {
   );
 };
 
-export default ErrorNotFounPage;
+export default ErrorNotFoundPage;

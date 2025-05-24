@@ -16,7 +16,7 @@ import ContactEdit from "./pages/Contact/ContactEdit";
 import AddressCreate from "./pages/Address/AddressCreate";
 import AddressEdit from "./pages/Address/AddressEdit";
 import ProtectedRoute from "./components/ProtectedRoutes";
-import ErrorNotFounPage from "./pages/Error/404";
+import ErrorNotFoundPage from "./pages/Error/404";
 
 createRoot(document.getElementById("root")).render(
   <StrictMode>
@@ -47,7 +47,7 @@ createRoot(document.getElementById("root")).render(
             </Route>
           </Route>
         </Route>
-        <Route path="*" element={<ErrorNotFounPage />} />
+        <Route path="*" element={<ErrorNotFoundPage />} />
       </Routes>
     </BrowserRouter>
   </StrictMode>
