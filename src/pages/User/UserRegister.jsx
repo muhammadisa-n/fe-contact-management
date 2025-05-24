@@ -25,7 +25,7 @@ const UserRegister = () => {
     if (response.status === 200) {
       await alertSuccess("User Created Successfully");
       await navigate({
-        pathname: "/contact-management/auth/login",
+        pathname: "/auth/login",
       });
     } else {
       alertError(responseBody.errors);
