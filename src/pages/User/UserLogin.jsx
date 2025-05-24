@@ -21,12 +21,13 @@ const Userlogin = () => {
       const token = responseBody.data.token;
       setToken(token);
       await navigate({
-        pathname: "/dashboard",
+        pathname: "/dashboard/contacts",
       });
     } else {
       alertError(responseBody.errors);
     }
   };
+
   return (
     <>
       <div className="animate-fade-in bg-gray-800 bg-opacity-80 p-8 rounded-xl shadow-custom border border-gray-700 backdrop-blur-sm w-full max-w-md">
@@ -81,6 +82,7 @@ const Userlogin = () => {
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 required=""
+                autoComplete="off"
               />
             </div>
           </div>

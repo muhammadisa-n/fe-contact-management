@@ -19,7 +19,7 @@ const UserLogout = () => {
     }
   }
   useEffectOnce(() => {
-    handleLogout().then(() => console.log("User Logged Out succesfully"));
+    handleLogout();
   });
   return <></>;
 };

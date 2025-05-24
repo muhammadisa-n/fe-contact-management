@@ -38,7 +38,6 @@ export default function ContactList() {
   async function fetchContacts() {
     const response = await contactList(token, { name, phone, email, page });
     const responseBody = await response.json();
-    console.log(responseBody);
 
     if (response.status === 200) {
       setContacts(responseBody.data);
@@ -57,7 +56,6 @@ export default function ContactList() {
 
     const response = await contactDelete(token, id);
     const responseBody = await response.json();
-    console.log(responseBody);
 
     if (response.status === 200) {
       await alertSuccess("Contact deleted successfully");
@@ -68,7 +66,7 @@ export default function ContactList() {
   }
 
   useEffect(() => {
-    fetchContacts().then(() => console.log("Contacts fetched"));
+    fetchContacts();
   }, [reload]);
 
   useEffectOnce(() => {
@@ -297,7 +295,6 @@ export default function ContactList() {
         <nav className="flex items-center space-x-3 bg-gray-800 bg-opacity-80 rounded-xl shadow-custom border border-gray-700 p-3 animate-fade-in">
           {page > 1 && (
             <a
-              href="#"
               onClick={() => handlePageChange(page - 1)}
               className="px-4 py-2 bg-gray-700 text-gray-300 rounded-lg hover:bg-gray-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 focus:ring-offset-gray-800 transition-all duration-200 flex items-center"
             >
@@ -309,7 +306,6 @@ export default function ContactList() {
               return (
                 <a
                   key={value}
-                  href="#"
                   onClick={() => handlePageChange(value)}
                   className="px-4 py-2 bg-gradient text-white rounded-lg hover:opacity-90 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 focus:ring-offset-gray-800 transition-all duration-200 font-medium shadow-md"
                 >
@@ -320,7 +316,6 @@ export default function ContactList() {
               return (
                 <a
                   key={value}
-                  href="#"
                   onClick={() => handlePageChange(value)}
                   className="px-4 py-2 bg-gray-700 text-gray-300 rounded-lg hover:bg-gray-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 focus:ring-offset-gray-800 transition-all duration-200"
                 >
@@ -331,7 +326,6 @@ export default function ContactList() {
           })}
           {page < totalPage && (
             <a
-              href="#"
               onClick={() => handlePageChange(page + 1)}
               className="px-4 py-2 bg-gray-700 text-gray-300 rounded-lg hover:bg-gray-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 focus:ring-offset-gray-800 transition-all duration-200 flex items-center"
             >

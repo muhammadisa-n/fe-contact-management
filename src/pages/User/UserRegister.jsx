@@ -31,6 +31,7 @@ const UserRegister = () => {
       alertError(responseBody.errors);
     }
   };
+
   return (
     <>
       <div className="animate-fade-in bg-gray-800 bg-opacity-80 p-8 rounded-xl shadow-custom border border-gray-700 backdrop-blur-sm w-full max-w-md">
@@ -108,6 +109,7 @@ const UserRegister = () => {
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 required
+                autoComplete="off"
               />
             </div>
           </div>
@@ -131,6 +133,7 @@ const UserRegister = () => {
                 value={confirmPassword}
                 onChange={(e) => setConfirmPassword(e.target.value)}
                 required
+                autoComplete="off"
               />
             </div>
           </div>

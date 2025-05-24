@@ -1,27 +1,44 @@
 import React, { useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
-import { useLocalStorage } from "react-use";
+import { Link, useNavigate, useParams } from "react-router-dom";
+import { useEffectOnce, useLocalStorage } from "react-use";
+import { contactDetail, contactUpdate } from "../../lib/api/Contacts";
 import { alertError, alertSuccess } from "../../lib/alert";
-import { contactCreate } from "../../lib/api/Contacts";
 
-const ContactCreate = () => {
+const ContactEdit = () => {
+  const { id } = useParams();
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
   const [email, setEmail] = useState("");
   const [phone, setPhone] = useState("");
   const [token, _] = useLocalStorage("token", "");
   const navigate = useNavigate();
+  async function fetchContact() {
+    const response = await contactDetail(token, id);
+    const responseBody = await response.json();
+    if (response.status === 200) {
+      setFirstName(responseBody.data.first_name);
+      setLastName(responseBody.data.last_name);
+      setEmail(responseBody.data.email);
+      setPhone(responseBody.data.phone);
+    } else {
+      await alertError(responseBody.errors);
+    }
+  }
+  useEffectOnce(() => {
+    fetchContact();
+  });
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const response = await contactCreate(token, {
+    const response = await contactUpdate(token, {
+      id: id,
       first_name: firstName,
       last_name: lastName,
       email: email,
       phone: phone,
     });
     const responseBody = await response.json();
-    if (response.status === 201) {
-      await alertSuccess("Contact Create Successfully");
+    if (response.status === 200) {
+      await alertSuccess("Contact Update Successfully");
       navigate({ pathname: "/dashboard/contacts" });
     } else {
       alertError(responseBody.errors);
@@ -37,8 +54,7 @@ const ContactCreate = () => {
           <i className="fas fa-arrow-left mr-2" /> Back to Contacts
         </Link>
         <h1 className="text-2xl font-bold text-white flex items-center">
-          <i className="fas fa-user-plus text-blue-400 mr-3" /> Create New
-          Contact
+          <i className="fas fa-user-edit text-blue-400 mr-3" /> Edit Contact
         </h1>
       </div>
       <div className="bg-gray-800 bg-opacity-80 rounded-xl shadow-custom border border-gray-700 overflow-hidden max-w-2xl mx-auto animate-fade-in">
@@ -62,9 +78,9 @@ const ContactCreate = () => {
                     name="first_name"
                     className="w-full pl-10 pr-3 py-3 bg-gray-700 bg-opacity-50 border border-gray-600 text-white rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200"
                     placeholder="Enter first name"
-                    required
                     value={firstName}
                     onChange={(e) => setFirstName(e.target.value)}
+                    required=""
                   />
                 </div>
               </div>
@@ -87,6 +103,7 @@ const ContactCreate = () => {
                     placeholder="Enter last name"
                     value={lastName}
                     onChange={(e) => setLastName(e.target.value)}
+                    required=""
                   />
                 </div>
               </div>
@@ -108,9 +125,9 @@ const ContactCreate = () => {
                   name="email"
                   className="w-full pl-10 pr-3 py-3 bg-gray-700 bg-opacity-50 border border-gray-600 text-white rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200"
                   placeholder="Enter email address"
-                  required
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
+                  required=""
                 />
               </div>
             </div>
@@ -131,11 +148,9 @@ const ContactCreate = () => {
                   name="phone"
                   className="w-full pl-10 pr-3 py-3 bg-gray-700 bg-opacity-50 border border-gray-600 text-white rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200"
                   placeholder="Enter phone number"
-                  inputMode="numeric"
-                  pattern="[0-9]*"
-                  required
                   value={phone}
                   onChange={(e) => setPhone(e.target.value)}
+                  required=""
                 />
               </div>
             </div>
@@ -150,7 +165,7 @@ const ContactCreate = () => {
                 type="submit"
                 className="px-5 py-3 bg-gradient text-white rounded-lg hover:opacity-90 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 focus:ring-offset-gray-800 transition-all duration-200 font-medium shadow-lg transform hover:-translate-y-0.5 flex items-center"
               >
-                <i className="fas fa-plus-circle mr-2" /> Create Contact
+                <i className="fas fa-save mr-2" /> Save Changes
               </button>
             </div>
           </form>
@@ -160,4 +175,4 @@ const ContactCreate = () => {
   );
 };
 
-export default ContactCreate;
+export default ContactEdit;

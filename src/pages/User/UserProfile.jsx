@@ -24,7 +24,7 @@ const UserProfile = () => {
     }
   }
   useEffectOnce(() => {
-    fetchUserDetail().then(() => console.log("User Detail Loaded"));
+    fetchUserDetail();
   });
   const handleSubmitProfile = async (e) => {
     e.preventDefault();
@@ -139,6 +139,7 @@ const UserProfile = () => {
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}
                     required
+                    autoComplete="off"
                   />
                 </div>
               </div>
@@ -162,6 +163,7 @@ const UserProfile = () => {
                     value={confirmPassword}
                     onChange={(e) => setConfirmPassword(e.target.value)}
                     required
+                    autoComplete="off"
                   />
                 </div>
               </div>
