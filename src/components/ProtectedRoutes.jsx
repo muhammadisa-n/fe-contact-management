@@ -40,9 +40,9 @@ const ProtectedRoute = () => {
     if (mode === "development") {
       return <Navigate to="/auth/login" replace />;
     } else {
-      const redirectUrl = `${import.meta.env.VITE_PANEL_LOGIN}/login?redirect=${
-        window.location.href
-      }/dashboard`;
+      const redirectUrl = `${
+        import.meta.env.VITE_PANEL_LOGIN
+      }/login?redirect=${encodeURIComponent(window.location.href)}`;
       window.location.href = redirectUrl;
       return null;
     }

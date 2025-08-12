@@ -37,9 +37,9 @@ const ProtectedAuthRoute = ({ children }) => {
   }
 
   if (mode === "production") {
-    const redirectUrl = `${import.meta.env.VITE_PANEL_LOGIN}/login?redirect=${
-      window.location.href
-    }/dashboard`;
+    const redirectUrl = `${
+      import.meta.env.VITE_PANEL_LOGIN
+    }/login?redirect=${encodeURIComponent(window.location.href)}`;
     window.location.href = redirectUrl;
     return null;
   }
