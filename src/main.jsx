@@ -15,7 +15,7 @@ import ContactDetail from "./pages/Contact/ContactDetail";
 import ContactEdit from "./pages/Contact/ContactEdit";
 import AddressCreate from "./pages/Address/AddressCreate";
 import AddressEdit from "./pages/Address/AddressEdit";
-import ProtectedRoute from "./components/ProtectedRoute";
+import ProtectedRoute from "./components/ProtectedRoutes";
 import ErrorNotFoundPage from "./pages/Error/404";
 
 const mode = import.meta.env.VITE_NODE_ENV;
