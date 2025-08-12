@@ -6,4 +6,7 @@ import tailwindcss from "@tailwindcss/vite";
 export default defineConfig({
   base: "/contact-management/",
   plugins: [react(), tailwindcss()],
+  server: {
+    port: 15000,
+  },
 });
