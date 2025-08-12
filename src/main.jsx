@@ -17,6 +17,7 @@ import AddressCreate from "./pages/Address/AddressCreate";
 import AddressEdit from "./pages/Address/AddressEdit";
 import ProtectedRoute from "./components/ProtectedRoutes";
 import ErrorNotFoundPage from "./pages/Error/404";
+import ProtectedAuthRoute from "./components/ProtectedAuthRoute";
 
 createRoot(document.getElementById("root")).render(
   <StrictMode>
@@ -24,9 +25,24 @@ createRoot(document.getElementById("root")).render(
       <Routes>
         <Route path="/" element={<Navigate to="auth/login" replace />} />
         <Route element={<MainLayout />}>
-          <Route path="auth/register" element={<UserRegister />} />
-          <Route path="auth/login" element={<UserLogin />} />
+          <Route
+            path="auth/register"
+            element={
+              <ProtectedAuthRoute>
+                <UserRegister />
+              </ProtectedAuthRoute>
+            }
+          />
+          <Route
+            path="auth/login"
+            element={
+              <ProtectedAuthRoute>
+                <UserLogin />
+              </ProtectedAuthRoute>
+            }
+          />
         </Route>
+
         <Route path="dashboard" element={<ProtectedRoute />}>
           <Route element={<DashboardLayout />}>
             <Route path="users">
