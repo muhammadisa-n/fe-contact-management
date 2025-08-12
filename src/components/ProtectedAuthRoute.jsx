@@ -1,9 +1,10 @@
-import { Navigate, Outlet } from "react-router-dom";
+// components/ProtectedAuthRoute.jsx
+import { Navigate } from "react-router-dom";
 import { useLocalStorage } from "react-use";
 import axios from "axios";
 import { useEffect, useState } from "react";
 
-const ProtectedRoute = () => {
+const ProtectedAuthRoute = ({ children }) => {
   const mode = import.meta.env.VITE_NODE_ENV;
   const [token] = useLocalStorage("token");
   const [loading, setLoading] = useState(mode === "production");
@@ -18,14 +19,9 @@ const ProtectedRoute = () => {
           `${import.meta.env.VITE_BASE_API_URL}/verify-sso`,
           { withCredentials: true }
         );
-        if (res.status === 200) {
-          setIsAuth(true);
-        } else {
-          setIsAuth(false);
-        }
-      } catch (err) {
+        if (res.status === 200) setIsAuth(true);
+      } catch {
         setIsAuth(false);
-        console.error("SSO check failed:", err);
       } finally {
         setLoading(false);
       }
@@ -36,22 +32,21 @@ const ProtectedRoute = () => {
 
   if (loading) return <p>Loading...</p>;
 
-  if (!isAuth) {
-    if (mode === "development") {
-      return <Navigate to="/auth/login" replace />;
-    } else {
-      const redirectUrl = encodeURIComponent(
-        `${window.location.origin}${import.meta.env.VITE_BASE_URL}/dashboard`
-      );
-      const ssoLoginUrl = `${
-        import.meta.env.VITE_PANEL_LOGIN
-      }/login?redirect=${redirectUrl}`;
-      window.location.href = ssoLoginUrl;
-      return null;
-    }
+  if (isAuth) {
+    return <Navigate to="/dashboard" replace />;
   }
 
-  return <Outlet />;
+  if (mode === "production") {
+    const redirectUrl = `${
+      import.meta.env.VITE_PANEL_LOGIN
+    }/login?redirect=${encodeURIComponent(
+      `${window.location.origin}${import.meta.env.BASE_URL}dashboard`
+    )}`;
+    window.location.href = redirectUrl;
+    return null;
+  }
+
+  return children;
 };
 
-export default ProtectedRoute;
+export default ProtectedAuthRoute;
