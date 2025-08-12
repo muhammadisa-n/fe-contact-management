@@ -3,7 +3,7 @@ import { useLocalStorage } from "react-use";
 import axios from "axios";
 import { useEffect, useState } from "react";
 const ProtectedRoute = () => {
-  const mode = import.meta.env.VITE_NODE_ENV;
+  const mode = import.meta.env.MODE;
   const [token] = useLocalStorage("token");
   const [loading, setLoading] = useState(mode === "production");
   const [isAuth, setIsAuth] = useState(mode === "development" && !!token);
