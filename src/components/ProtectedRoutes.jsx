@@ -23,9 +23,8 @@ const ProtectedRoute = () => {
         } else {
           setIsAuth(false);
         }
-      } catch (err) {
+      } catch {
         setIsAuth(false);
-        console.error("SSO check failed:", err);
       } finally {
         setLoading(false);
       }

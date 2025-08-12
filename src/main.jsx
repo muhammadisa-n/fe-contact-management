@@ -15,34 +15,35 @@ import ContactDetail from "./pages/Contact/ContactDetail";
 import ContactEdit from "./pages/Contact/ContactEdit";
 import AddressCreate from "./pages/Address/AddressCreate";
 import AddressEdit from "./pages/Address/AddressEdit";
-import ProtectedRoute from "./components/ProtectedRoutes";
+import ProtectedRoute from "./components/ProtectedRoute";
 import ErrorNotFoundPage from "./pages/Error/404";
-import ProtectedAuthRoute from "./components/ProtectedAuthRoute";
+
+const mode = import.meta.env.VITE_NODE_ENV;
 
 createRoot(document.getElementById("root")).render(
   <StrictMode>
     <BrowserRouter basename="/contact-management/">
       <Routes>
-        <Route path="/" element={<Navigate to="auth/login" replace />} />
-        <Route element={<MainLayout />}>
-          <Route
-            path="auth/register"
-            element={
-              <ProtectedAuthRoute>
-                <UserRegister />
-              </ProtectedAuthRoute>
-            }
-          />
-          <Route
-            path="auth/login"
-            element={
-              <ProtectedAuthRoute>
-                <UserLogin />
-              </ProtectedAuthRoute>
-            }
-          />
-        </Route>
+        <Route
+          path="/"
+          element={
+            mode === "development" ? (
+              <Navigate to="auth/login" replace />
+            ) : (
+              <Navigate to="dashboard/contacts" replace />
+            )
+          }
+        />
 
+        {/* Auth routes hanya di development */}
+        {mode === "development" && (
+          <Route element={<MainLayout />}>
+            <Route path="auth/register" element={<UserRegister />} />
+            <Route path="auth/login" element={<UserLogin />} />
+          </Route>
+        )}
+
+        {/* Protected dashboard */}
         <Route path="dashboard" element={<ProtectedRoute />}>
           <Route element={<DashboardLayout />}>
             <Route path="users">
@@ -63,6 +64,7 @@ createRoot(document.getElementById("root")).render(
             </Route>
           </Route>
         </Route>
+
         <Route path="*" element={<ErrorNotFoundPage />} />
       </Routes>
     </BrowserRouter>
