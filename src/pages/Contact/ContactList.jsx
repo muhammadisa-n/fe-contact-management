@@ -36,7 +36,14 @@ export default function ContactList() {
   }
 
   async function fetchContacts() {
-    const response = await contactList(token, { name, phone, email, page });
+    const tokenToUse =
+      import.meta.env.VITE_NODE_ENV === "production" ? null : token;
+    const response = await contactList(tokenToUse, {
+      name,
+      phone,
+      email,
+      page,
+    });
     const responseBody = await response.json();
 
     if (response.status === 200) {

@@ -1,16 +1,35 @@
+const isDev = import.meta.env.VITE_NODE_ENV === "development";
+
+const buildHeaders = (token, extraHeaders = {}) => {
+  const headers = {
+    Accept: "application/json",
+    ...extraHeaders,
+  };
+
+  if (isDev && token) {
+    headers.Authorization = token;
+  }
+
+  return headers;
+};
+
+const buildOptions = (token, options = {}) => {
+  return {
+    ...options,
+    headers: buildHeaders(token, options.headers || {}),
+    credentials: isDev ? "same-origin" : "include", // Dev tidak kirim cookie cross-domain
+  };
+};
+
 export const addressCreate = async (
   token,
   { contactId, street, city, province, country, postal_code }
 ) => {
   return await fetch(
     `${import.meta.env.VITE_BASE_API_URL}/contacts/${contactId}/addresses`,
-    {
+    buildOptions(token, {
       method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        Accept: "application/json",
-        Authorization: token,
-      },
+      headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
         street,
         city,
@@ -18,7 +37,7 @@ export const addressCreate = async (
         country,
         postal_code,
       }),
-    }
+    })
   );
 };
 
@@ -27,13 +46,7 @@ export const addressList = async (token, contactId) => {
     `${import.meta.env.VITE_BASE_API_URL}/contacts/${contactId}/addresses`
   );
 
-  return await fetch(url, {
-    method: "GET",
-    headers: {
-      Accept: "application/json",
-      Authorization: token,
-    },
-  });
+  return await fetch(url, buildOptions(token, { method: "GET" }));
 };
 
 export const addressDelete = async (token, contactId, addressId) => {
@@ -41,13 +54,7 @@ export const addressDelete = async (token, contactId, addressId) => {
     `${
       import.meta.env.VITE_BASE_API_URL
     }/contacts/${contactId}/addresses/${addressId}`,
-    {
-      method: "DELETE",
-      headers: {
-        Accept: "application/json",
-        Authorization: token,
-      },
-    }
+    buildOptions(token, { method: "DELETE" })
   );
 };
 
@@ -56,13 +63,7 @@ export const addressDetail = async (token, contactId, addressId) => {
     `${
       import.meta.env.VITE_BASE_API_URL
     }/contacts/${contactId}/addresses/${addressId}`,
-    {
-      method: "GET",
-      headers: {
-        Accept: "application/json",
-        Authorization: token,
-      },
-    }
+    buildOptions(token, { method: "GET" })
   );
 };
 
@@ -74,13 +75,9 @@ export const addressUpdate = async (
     `${
       import.meta.env.VITE_BASE_API_URL
     }/contacts/${contactId}/addresses/${addressId}`,
-    {
+    buildOptions(token, {
       method: "PUT",
-      headers: {
-        "Content-Type": "application/json",
-        Accept: "application/json",
-        Authorization: token,
-      },
+      headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
         street,
         city,
@@ -88,6 +85,6 @@ export const addressUpdate = async (
         country,
         postal_code,
       }),
-    }
+    })
   );
 };
