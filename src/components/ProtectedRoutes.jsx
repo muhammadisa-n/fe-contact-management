@@ -6,7 +6,6 @@ import { useEffect, useState } from "react";
 const ProtectedRoute = () => {
   const mode = import.meta.env.VITE_NODE_ENV;
   const [token] = useLocalStorage("token");
-  const [loading, setLoading] = useState(mode === "production");
   const [isAuth, setIsAuth] = useState(mode === "development" && !!token);
 
   useEffect(() => {
@@ -32,8 +31,6 @@ const ProtectedRoute = () => {
 
     checkSSO();
   }, [mode]);
-
-  if (loading) return <p>Loading...</p>;
 
   if (!isAuth) {
     if (mode === "development") {
