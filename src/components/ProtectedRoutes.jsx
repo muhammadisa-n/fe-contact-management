@@ -2,11 +2,13 @@ import { Navigate, Outlet } from "react-router-dom";
 import { useLocalStorage } from "react-use";
 import axios from "axios";
 import { useEffect, useState } from "react";
+import Loading from "./Loading";
 
 const ProtectedRoute = () => {
   const mode = import.meta.env.VITE_NODE_ENV;
   const [token] = useLocalStorage("token");
   const [isAuth, setIsAuth] = useState(mode === "development" && !!token);
+  const [loading, setLoading] = useState(mode === "production"); // default loading jika production
 
   useEffect(() => {
     if (mode !== "production") return;
@@ -24,19 +26,26 @@ const ProtectedRoute = () => {
         }
       } catch {
         setIsAuth(false);
+      } finally {
+        setLoading(false);
       }
     };
 
     checkSSO();
   }, [mode]);
 
+  if (loading) {
+    return <Loading>Checking Authentication...</Loading>;
+  }
+
+  // jika belum login
   if (!isAuth) {
     if (mode === "development") {
       return <Navigate to="/auth/login" replace />;
     } else {
-      const redirectUrl = `${
-        import.meta.env.VITE_PANEL_LOGIN
-      }/login?redirect=${encodeURIComponent(window.location.href)}`;
+      const redirectUrl = `${import.meta.env.VITE_PANEL_LOGIN}/login?redirect=${
+        window.location.href
+      }`;
       window.location.href = redirectUrl;
       return null;
     }
