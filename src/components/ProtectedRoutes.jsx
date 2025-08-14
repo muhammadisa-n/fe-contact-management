@@ -24,9 +24,10 @@ const ProtectedRoute = () => {
         }
       } catch {
         setIsAuth(false);
-      } finally {
-        setLoading(false);
       }
+      // finally {
+      //   setLoading(false);
+      // }
     };
 
     checkSSO();
