@@ -15,7 +15,9 @@ const UserProfile = () => {
   const [token, _] = useLocalStorage("token", "");
 
   async function fetchUserDetail() {
-    const response = await userDetail(token);
+    const tokenToUse =
+      import.meta.env.VITE_NODE_ENV === "production" ? null : token;
+    const response = await userDetail(tokenToUse);
     const responseBody = await response.json();
     if (response.status === 200) {
       setName(responseBody.data.name);
