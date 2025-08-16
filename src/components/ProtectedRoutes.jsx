@@ -15,11 +15,14 @@ const ProtectedRoute = () => {
 
     const checkSSO = async () => {
       try {
-        const res = await axios.get(
+        const res = await axios.post(
           `${import.meta.env.VITE_BASE_API_URL}/verify-sso`,
-          { withCredentials: true }
+          {},
+          {
+            headers: { "x-app-key": import.meta.env.VITE_SSO_APP_KEY },
+            withCredentials: true,
+          }
         );
-        console.log(res);
         if (res.status === 200) {
           setIsAuth(true);
         } else {

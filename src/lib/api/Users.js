@@ -3,6 +3,7 @@ const isDev = import.meta.env.VITE_NODE_ENV === "development";
 const buildHeaders = (token, extraHeaders = {}) => {
   const headers = {
     Accept: "application/json",
+    "x-app-key": import.meta.env.VITE_SSO_APP_KEY,
     ...extraHeaders,
   };
 
@@ -49,7 +50,6 @@ export const userDetail = async (token) => {
       method: "GET",
       headers: {
         Accept: "application/json",
-        Authorization: token,
       },
     })
   );
@@ -62,7 +62,6 @@ export const userUpdateProfile = async (token, { name }) => {
       headers: {
         "Content-type": "application/json",
         Accept: "application/json",
-        Authorization: token,
       },
       body: JSON.stringify({ name }),
     })
@@ -76,7 +75,6 @@ export const userUpdatePassword = async (token, { password }) => {
       headers: {
         "Content-type": "application/json",
         Accept: "application/json",
-        Authorization: token,
       },
       body: JSON.stringify({ password }),
     })
@@ -90,7 +88,6 @@ export const userLogout = async (token) => {
       headers: {
         "Content-type": "application/json",
         Accept: "application/json",
-        Authorization: token,
       },
     })
   );

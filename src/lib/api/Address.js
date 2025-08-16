@@ -3,6 +3,7 @@ const isDev = import.meta.env.VITE_NODE_ENV === "development";
 const buildHeaders = (token, extraHeaders = {}) => {
   const headers = {
     Accept: "application/json",
+    "x-app-key": import.meta.env.VITE_SSO_APP_KEY,
     ...extraHeaders,
   };
 
