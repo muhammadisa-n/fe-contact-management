@@ -4,6 +4,8 @@ import { alertError } from "../../lib/alert";
 import { userLogout } from "../../lib/api/Users";
 
 const UserLogout = () => {
+  const isDev = import.meta.env.VITE_NODE_ENV === "development";
+
   const [token, setToken] = useLocalStorage("token", "");
   const navigate = useNavigate();
   async function handleLogout() {
@@ -13,9 +15,17 @@ const UserLogout = () => {
     const responseBody = await response.json();
     if (response.status === 200) {
       setToken("");
-      await navigate({
-        pathname: "/auth/login",
-      });
+      if (isDev) {
+        await navigate({
+          pathname: "/auth/login",
+        });
+      } else {
+        const redirectUrl = `${
+          import.meta.env.VITE_PANEL_LOGIN
+        }/login?redirect=${window.location.href}`;
+        window.location.href = redirectUrl;
+        return null;
+      }
     } else {
       alertError(responseBody.errors);
     }
