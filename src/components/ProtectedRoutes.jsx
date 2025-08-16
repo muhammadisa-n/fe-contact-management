@@ -19,6 +19,7 @@ const ProtectedRoute = () => {
           `${import.meta.env.VITE_BASE_API_URL}/verify-sso`,
           { withCredentials: true }
         );
+        console.log(res);
         if (res.status === 200) {
           setIsAuth(true);
         } else {
