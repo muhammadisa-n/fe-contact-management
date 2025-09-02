@@ -85,6 +85,7 @@ export const userLogout = async (token) => {
     `${import.meta.env.VITE_BASE_API_URL}/users/logout`,
     buildOptions(token, {
       method: "DELETE",
+      credentials: "include",
       headers: {
         "Content-type": "application/json",
         Accept: "application/json",
